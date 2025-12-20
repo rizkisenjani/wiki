@@ -26,13 +26,14 @@ def search(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             query = form.cleaned_data["form"]
-            return render(request, "encyclopedia/layout.html", {
+            return render(request, "encyclopedia/search.html", {
                 "form": form,
-                "query": query,
+                "title": query,
+                "content": util.get_entry(query),
             })
     else:
         form = SearchForm()
 
-    return render(request, "encyclopedia/layout.html", {
+    return render(request, "encyclopedia/search.html", {
         "form": form,
     })
