@@ -1,6 +1,3 @@
-# test comment remove later
-
-
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django import forms
