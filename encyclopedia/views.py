@@ -37,3 +37,6 @@ def search(request):
     return render(request, "encyclopedia/search.html", {
         "form": form,
     })
+
+def new(request):
+    return render(request,  "encyclopedia/new.html")
