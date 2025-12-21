@@ -66,3 +66,11 @@ def new_page(request):
         "form": SearchForm(),
         "new_page_form": NewPage()
     })
+
+def edit_page(request):
+    #still working on this page
+    return render(request, "encyclopedia/editpage.html", {
+        #"title": title,
+        "form": SearchForm(),
+        ""
+    })
