@@ -71,6 +71,5 @@ def edit_page(request):
     #still working on this page
     return render(request, "encyclopedia/editpage.html", {
         #"title": title,
-        "form": SearchForm(),
-        ""
+        "form": SearchForm()
     })
