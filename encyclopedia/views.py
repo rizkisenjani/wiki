@@ -46,9 +46,23 @@ def new_page(request):
     if request.method == "POST":
         new_page_form = NewPage(request.POST)
         if new_page_form.is_valid():
+            entries = util.list_entries()
             title = new_page_form.cleaned_data['title']
             text = new_page_form.cleaned_data['text_area']
-        return render(request, "encyclopedia/newpage.html", {
-            "form": SearchForm(),
-            "new_page_form": NewPage()
-        })
+            if title in entries:
+                return render(request, "encyclopedia/errors.html", {
+                    "form": SearchForm(),
+                    "error": f"A page with title '{title}' already exists."
+                })
+            else:
+                new_entry = util.save_entry(title, text)
+                content = util.get_entry(title)
+                return render(request, "encyclopedia/entry.html", {
+                    "form": SearchForm(),
+                    "title": title,
+                    "content": content,
+                })
+    return render(request, "encyclopedia/newpage.html", {
+        "form": SearchForm(),
+        "new_page_form": NewPage()
+    })
