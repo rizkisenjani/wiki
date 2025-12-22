@@ -92,3 +92,9 @@ def edit_page(request, title):
         "title": title,
         "form": SearchForm(),
     })
+
+def random_page(request):
+    entries = util.list_entries()
+    import random
+    random_title = random.choice(entries)
+    return HttpResponseRedirect(f"/wiki/{random_title}")
