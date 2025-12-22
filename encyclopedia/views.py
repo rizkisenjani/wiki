@@ -67,9 +67,28 @@ def new_page(request):
         "new_page_form": NewPage()
     })
 
-def edit_page(request):
-    #still working on this page
+def edit_page(request, title):
+    content = util.get_entry(title)
+    new_page_form = NewPage(initial={
+        'title': title,
+        'text_area': content,
+        })
+    if request.method == "POST":
+        new_page_form = NewPage(request.POST, initial={
+        'title': title,
+        'text_area': content,
+        })
+        if new_page_form.is_valid():
+            new_content = new_page_form.cleaned_data['text_area']
+            util.save_entry(title, new_content)
+            return render(request, "encyclopedia/entry.html", {
+                "form": SearchForm(),
+                "title": title,
+                "content": new_content,
+            })
     return render(request, "encyclopedia/editpage.html", {
-        #"title": title,
-        "form": SearchForm()
+        "new_page_form": new_page_form,
+        "content": content,
+        "title": title,
+        "form": SearchForm(),
     })
