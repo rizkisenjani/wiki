@@ -19,9 +19,14 @@ def index(request):
 
 
 def entry(request, title):
+    import markdown2
+    content = util.get_entry(title)
+    html_content = markdown2.markdown(content)
+    print(f"Content: {content}")
+    print(f"HTML Content: {html_content}")
     return render(request, "encyclopedia/entry.html", {
         "title": title,
-        "content": util.get_entry(title),
+        "content": html_content,
         "form": SearchForm(),
     })
 
@@ -98,3 +103,4 @@ def random_page(request):
     import random
     random_title = random.choice(entries)
     return HttpResponseRedirect(f"/wiki/{random_title}")
+

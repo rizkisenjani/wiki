@@ -8,8 +8,7 @@
     {% if content == None %}
         <h1>Page Not Found!</h1>
     {% else %}
-        <h1>{{title}}</h1>
-        <p>{{content}}</p>
+        {{content|safe}}
     {% endif %}
     <a href="{% url 'edit_page' title %}">Edit Page</a>
 {% endblock %}
