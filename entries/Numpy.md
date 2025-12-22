@@ -1,1 +1,3 @@
-# Numpy is Python library used for scientific computing
+# Numpy 
+
+Numpy is Python library used for scientific computing

@@ -22,8 +22,6 @@ def entry(request, title):
     import markdown2
     content = util.get_entry(title)
     html_content = markdown2.markdown(content)
-    print(f"Content: {content}")
-    print(f"HTML Content: {html_content}")
     return render(request, "encyclopedia/entry.html", {
         "title": title,
         "content": html_content,
@@ -86,11 +84,7 @@ def edit_page(request, title):
         if new_page_form.is_valid():
             new_content = new_page_form.cleaned_data['text_area']
             util.save_entry(title, new_content)
-            return render(request, "encyclopedia/entry.html", {
-                "form": SearchForm(),
-                "title": title,
-                "content": new_content,
-            })
+            return entry(request, title)
     return render(request, "encyclopedia/editpage.html", {
         "new_page_form": new_page_form,
         "content": content,
