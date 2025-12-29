@@ -21,12 +21,19 @@ def index(request):
 def entry(request, title):
     import markdown2
     content = util.get_entry(title)
-    html_content = markdown2.markdown(content)
-    return render(request, "encyclopedia/entry.html", {
-        "title": title,
-        "content": html_content,
-        "form": SearchForm(),
-    })
+    if content:
+        html_content = markdown2.markdown(content)
+        return render(request, "encyclopedia/entry.html", {
+            "title": title,
+            "content": html_content,
+            "form": SearchForm(),
+        })
+    else:
+        return render(request, "encyclopedia/entry.html", {
+            "title": title,
+            "form": SearchForm(),
+            "message": "Page Not Found!"
+        })
 
 def search(request):
     if request.method == "POST":
@@ -35,17 +42,14 @@ def search(request):
         if form.is_valid():
             query = form.cleaned_data["form"]
             query = query.lower()
-            print(query)
-            #for entry_item in entries:
-                #if query in entry_item.lower():
-            return render(request, "encyclopedia/search.html", {
-                #"new_entry" : entry_item,
-                "query": query,
-                "entries": entries,
-                "form": SearchForm(),
-            })
-                #else:
-                    #pass
+            for entry_item in entries:
+                if query in entry_item.lower():
+                    return entry(request, entry_item)
+            return render(request, "encyclopedia/entry.html", {
+            "title": entry_item,
+            "form": SearchForm(),
+            "message": "Page Not Found!"
+        })       
     else:
         form = SearchForm()
 
