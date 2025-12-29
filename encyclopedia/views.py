@@ -31,13 +31,21 @@ def entry(request, title):
 def search(request):
     if request.method == "POST":
         form = SearchForm(request.POST)
+        entries = util.list_entries()
         if form.is_valid():
             query = form.cleaned_data["form"]
+            query = query.lower()
+            print(query)
+            #for entry_item in entries:
+                #if query in entry_item.lower():
             return render(request, "encyclopedia/search.html", {
-                "form": form,
-                "title": query,
-                "content": util.get_entry(query),
+                #"new_entry" : entry_item,
+                "query": query,
+                "entries": entries,
+                "form": SearchForm(),
             })
+                #else:
+                    #pass
     else:
         form = SearchForm()
 
@@ -59,35 +67,28 @@ def new_page(request):
                 })
             else:
                 new_entry = util.save_entry(title, text)
-                content = util.get_entry(title)
-                return render(request, "encyclopedia/entry.html", {
-                    "form": SearchForm(),
-                    "title": title,
-                    "content": content,
-                })
+                return entry(request, title)
     return render(request, "encyclopedia/newpage.html", {
         "form": SearchForm(),
         "new_page_form": NewPage()
     })
 
 def edit_page(request, title):
-    content = util.get_entry(title)
+    text_area = util.get_entry(title)
     new_page_form = NewPage(initial={
         'title': title,
-        'text_area': content,
+        'text_area': text_area,
         })
     if request.method == "POST":
-        new_page_form = NewPage(request.POST, initial={
-        'title': title,
-        'text_area': content,
-        })
+        new_page_form = NewPage(request.POST)
         if new_page_form.is_valid():
-            new_content = new_page_form.cleaned_data['text_area']
-            util.save_entry(title, new_content)
+            entries = util.list_entries()
+            title = new_page_form.cleaned_data['title']
+            text = new_page_form.cleaned_data['text_area']
+            new_entry = util.save_entry(title, text)
             return entry(request, title)
     return render(request, "encyclopedia/editpage.html", {
         "new_page_form": new_page_form,
-        "content": content,
         "title": title,
         "form": SearchForm(),
     })
