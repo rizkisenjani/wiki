@@ -5,17 +5,14 @@
 {% endblock %}
 
 {% block body %}
+<h2>Search Results for "{{ query }}"</h2>
+<br>
 {% for entry_item in entries %}
-    {% if query in entry_item|lower %}
-        <h2>Search Results for "{{ query }}"</h2>
-        <br>    
+    {% if query in entry_item|lower %}    
         <li>
             <a href="{% url 'entry' entry_item %}">{{ entry_item }}</a>
         </li>
    {% endif %}
-   {% if query != entry_item|lower %}
-        <h2>Page Not Found!</h2>
-   {% endif %}
-
 {% endfor %}
+<h2>{{ message }}</h2>
 {% endblock %}

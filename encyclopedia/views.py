@@ -44,12 +44,18 @@ def search(request):
             query = query.lower()
             for entry_item in entries:
                 if query in entry_item.lower():
-                    return entry(request, entry_item)
-            return render(request, "encyclopedia/entry.html", {
-            "title": entry_item,
-            "form": SearchForm(),
-            "message": "Page Not Found!"
-        })       
+                    return render(request, "encyclopedia/search.html", {
+                        "query": query,
+                        "entries": entries,
+                        "form": SearchForm(),
+                    })
+                else:
+                    message = "Page Not Found!"
+            return render(request, "encyclopedia/search.html", {
+                "query": query,
+                "message": message,
+                "form": SearchForm(),
+            })      
     else:
         form = SearchForm()
 

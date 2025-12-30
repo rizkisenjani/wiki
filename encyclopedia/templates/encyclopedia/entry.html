@@ -6,7 +6,9 @@
 
 {% block body %}
     <h1>{{ message}}</h1>
-    {{content|safe}}
-    <br>
-    <a href="{% url 'edit_page' title %}">Edit Page</a>
+    {% if content %}
+        {{content|safe}}
+        <br>
+        <a href="{% url 'edit_page' title %}">Edit Page</a>
+    {% endif %}
 {% endblock %}
